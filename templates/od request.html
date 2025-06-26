@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faculty OD Requests</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      text-align: center;
+      padding: 50px;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #2c3e50;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    a {
+      color: #2980b9;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: #3498db;
+    }
+
+    .action-btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      font-size: 13px;
+      margin: 2px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .approve {
+      background: linear-gradient(to right, #27ae60, #2ecc71);
+    }
+
+    .approve:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .reject {
+      background: linear-gradient(to right, #c0392b, #e74c3c);
+    }
+
+    .reject:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Faculty OD Requests</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Roll Number</th>
+          <th>From Date</th>
+          <th>To Date</th>
+          <th>Reason</th>
+          <th>Document</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="requestsTable">
+        <!-- Data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    async function fetchODRequests() {
+      const response = await fetch("http://localhost:5000/faculty/od_requests");
+      const data = await response.json();
+      const tableBody = document.getElementById("requestsTable");
+      
+      tableBody.innerHTML = "";
+      data.forEach(application => {
+        const row = `<tr>
+          <td>${application.name}</td>
+          <td>${application.rollNumber}</td>
+          <td>${application.fromDate}</td>
+          <td>${application.toDate}</td>
+          <td>${application.reason}</td>
+          <td><a href="/${application.file_path}" target="_blank">View</a></td>
+          <td>
+            <button class="action-btn approve" onclick="updateStatus('${application._id}', 'Approved')">Approve</button>
+            <button class="action-btn reject" onclick="updateStatus('${application._id}', 'Rejected')">Reject</button>
+          </td>
+        </tr>`;
+        tableBody.innerHTML += row;
+      });
+    }
+
+    async function updateStatus(id, status) {
+      const response = await fetch("http://localhost:5000/update_status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status })
+      });
+      const result = await response.json();
+      alert(result.message);
+      fetchODRequests();
+    }
+
+    fetchODRequests();
+  </script>
+</body>
+</html>

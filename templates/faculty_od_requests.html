@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faculty OD Requests</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      margin: 0;
+      padding: 30px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    h2, h3 {
+      margin: 0;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background: #34495e;
+      color: white;
+    }
+
+    td a {
+      color: #34495e;
+      text-decoration: none;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      margin: 2px;
+      display: inline-block;
+      font-size: 14px;
+    }
+
+    .btn-approve {
+      background: #27ae60;
+    }
+
+    .btn-reject {
+      background: #e74c3c;
+    }
+
+    .btn-gray {
+      background: #7f8c8d;
+    }
+
+    .btn-black {
+      background: #2c3e50;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      cursor: pointer;
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Faculty OD Requests - Welcome, {{ user }}</h2>
+    <h3>Pending OD Requests</h3>
+    <table>
+      <tr>
+        <th>Student Name</th>
+        <th>Roll Number</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Reason</th>
+        <th>File</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      {% for request in requests %}
+      <tr>
+        <td>{{ request.student_name }}</td>
+        <td>{{ request.roll_number }}</td>
+        <td>{{ request.from_date }}</td>
+        <td>{{ request.to_date }}</td>
+        <td>{{ request.reason }}</td>
+        <td>
+          {% if request.file_path %}
+            <a href="{{ url_for('uploaded_file', filename=request.file_path) }}" target="_blank">View</a>
+          {% else %}
+            No File
+          {% endif %}
+        </td>
+        <td>{{ request.status }}</td>
+        <td class="actions">
+          <a href="/approve/{{ request._id }}" class="btn btn-approve">Approve</a>
+          <a href="/reject/{{ request._id }}" class="btn btn-reject">Reject</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br />
+    <a href="/faculty-dashboard" class="btn btn-gray">Back to Dashboard</a>
+    <a href="/logout" class="btn btn-black">Logout</a>
+  </div>
+
+</body>
+</html>

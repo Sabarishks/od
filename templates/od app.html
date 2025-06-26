@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OD Application</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      text-align: center;
+      padding: 50px;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 400px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+    .logo {
+            width: 80px;
+            height: 80px;
+            background-color: #2c3e50;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #2c3e50;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #2980b9;
+      outline: none;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.3);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #2c3e50, #3498db);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">KEC</div>
+    <h2>OD Application</h2>
+    <form id="odForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="rollNumber">Roll Number</label>
+        <input type="text" id="rollNumber" name="rollNumber" required />
+      </div>
+      <div class="form-group">
+        <label for="fromDate">From Date</label>
+        <input type="date" id="fromDate" name="fromDate" required />
+      </div>
+      <div class="form-group">
+        <label for="toDate">To Date</label>
+        <input type="date" id="toDate" name="toDate" required />
+      </div>
+      <div class="form-group">
+        <label for="reason">Reason</label>
+        <textarea id="reason" name="reason" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="file">Upload Document</label>
+        <input type="file" id="file" name="file" accept="application/pdf" required />
+      </div>
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("file").addEventListener("change", function() {
+      const file = this.files[0];
+      if (file && file.type !== "application/pdf") {
+        alert("Please upload a PDF file only.");
+        this.value = "";
+      }
+    });
+
+    document.getElementById("odForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      console.log("Submitted Data:", Object.fromEntries(formData));
+      alert("Application submitted successfully!");
+    });
+  </script>
+</body>
+</html>

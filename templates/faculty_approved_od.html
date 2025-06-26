@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Approved OD Requests</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      margin: 0;
+      padding: 30px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      color: #2c3e50;
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background:#34495e;
+      color: white;
+    }
+
+    td a {
+      color: #2980b9;
+      text-decoration: none;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 14px;
+      background: #7f8c8d;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Approved OD Requests - Faculty</h2>
+    <table>
+      <tr>
+        <th>Student Name</th>
+        <th>Roll Number</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Reason</th>
+        <th>File</th>
+      </tr>
+      {% for request in approved_requests %}
+      <tr>
+        <td>{{ request.student_name }}</td>
+        <td>{{ request.roll_number }}</td>
+        <td>{{ request.from_date }}</td>
+        <td>{{ request.to_date }}</td>
+        <td>{{ request.reason }}</td>
+        <td>
+          {% if request.file_path %}
+            <a href="{{ url_for('uploaded_file', filename=request.file_path) }}" target="_blank">View</a>
+          {% else %}
+            No File
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/faculty-dashboard" class="btn">Back to Dashboard</a>
+  </div>
+
+</body>
+</html>
