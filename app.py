@@ -11,7 +11,7 @@ app.secret_key = "your_secret_key"  # Needed for session management
 app.config["MONGO_URI"] = "mongodb://localhost:27017/od_management"
 mongo = PyMongo(app)
 
-# Ensure uploads directory exists
+
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
